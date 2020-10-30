@@ -1,17 +1,21 @@
-<div class="app-margin">
-    <div class="row">
-        <div class="col-md-3">
-            <app-cooldown-form
-                (createdTimerObject)="addTimerToList($event)">
+<body>
+    <div class="app-margin">
+        <div class="row">
+            <div class="col-md-3">
+                <app-cooldown-form
+                    (createdTimerObject)="addTimerToList($event)">
 
-            </app-cooldown-form>
-        </div>
-        <div class="col-md-9">
-            <app-cooldown-list>
-                
-            </app-cooldown-list>
+                </app-cooldown-form>
+            </div>
+            <div class="col-md-9">
+                <app-cooldown-list>
+                    
+                </app-cooldown-list>
+            </div>
         </div>
     </div>
-</div>
-
+    <footer class="footer text-right">
+            <span class="text-muted">by Setsuni :D</span>
+    </footer>
+</body>
 <router-outlet></router-outlet>

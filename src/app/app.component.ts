@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
+import { PartyMember } from './model/party-member';
+import { Timer } from './model/timer';
+import { CooldownListComponent } from './cooldown-list/cooldown-list.component';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +10,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'tibia-tools';
+
+  @ViewChild('input') textarea: ElementRef;
+  @ViewChild(CooldownListComponent, {static: true}) cooldownListComponent: CooldownListComponent;
+  
+  addTimerToList(timer: Timer) {
+    this.cooldownListComponent.addNewCard(timer);
+  }
 }

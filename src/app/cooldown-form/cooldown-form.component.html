@@ -1,0 +1,25 @@
+<div class="card">
+    <div class="card-header">
+        Timers
+    </div>
+    <form style="padding: 5px 10px 0">
+        <div class="form-group">
+            <label>Nome do timer</label>
+            <input type="text" class="form-control" #timerName>
+        </div>
+        <div class="form-group">
+            <label>Tempo do timer</label>
+            <select class="form-control" #timerLap>
+                <option value="1">1 hora</option>
+                <option value="4">4 horas</option>
+                <option value="20">20 horas</option>
+                <option value="24">24 horas</option>
+                <option value="48">48 horas</option>
+                <option value="336">14 dias</option>
+            </select>
+        </div>
+        <div class="form-group text-right">
+            <button type="button" class="btn btn-success" (click)="create(timerLap.value, timerName.value)">Criar</button>
+        </div>
+    </form>
+</div>

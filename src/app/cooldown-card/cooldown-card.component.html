@@ -1,7 +1,7 @@
 <div class="card row-card">
     <div class="card-header text-white" 
         [class.bg-success]="timer.active"
-        [class.bg-danger]="!timer.active || intervalRef == null">
+        [class.bg-danger]="!timer.active || timer.intervalRef == null">
 
         {{ timer.name }}
 

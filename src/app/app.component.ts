@@ -17,4 +17,8 @@ export class AppComponent {
   addTimerToList(timer: Timer) {
     this.cooldownListComponent.addNewCard(timer);
   }
+
+  saveAndReorder(timer: Timer) {
+    this.cooldownListComponent.sortAndSave();
+  }
 }

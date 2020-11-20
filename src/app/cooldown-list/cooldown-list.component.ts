@@ -20,14 +20,12 @@ export class CooldownListComponent implements OnInit {
 
   addNewCard(timer: Timer) {
     this.cooldownCardList.push(createNewCard(timer));
-    StorageComponent.updateCards(this.cooldownCardList);
-    this.sortArrays();
+    this.sortAndSave();
   }
 
   removeCard(id: number) {
     this.cooldownCardList = this.cooldownCardList.filter(cardComponent => cardComponent.timer.id !== id);
-    StorageComponent.updateCards(this.cooldownCardList);
-    this.sortArrays();
+    this.sortAndSave();
   }
 
   loadSavedCards() {
@@ -35,10 +33,10 @@ export class CooldownListComponent implements OnInit {
       this.cooldownCardList.push(createNewCard(createFromJSON(obj.timer)));
     });
     
-    this.sortArrays();
+    this.sortAndSave();
   }
 
-  sortArrays() {
+  sortAndSave() {
     this.sortArrayByActive();
     this.sortArrayByDate();
     StorageComponent.updateCards(this.cooldownCardList);

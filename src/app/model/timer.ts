@@ -90,6 +90,7 @@ export class Timer {
     pauseTimer() {
         this.active = false;
         clearInterval(this.intervalRef);
+        this.intervalRef = null;
         this.setDefaultDisplayText();
     }
 

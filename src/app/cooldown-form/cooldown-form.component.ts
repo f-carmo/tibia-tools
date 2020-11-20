@@ -8,6 +8,7 @@ import { Timer, createInitializedTimer } from '../model/timer'
 })
 export class CooldownFormComponent implements OnInit {
   @Output() createdTimerObject: EventEmitter<Timer> = new EventEmitter();
+  @Output() saveAndReorderEvent: EventEmitter<boolean> = new EventEmitter();
   timer: Timer;
   
   constructor() { }
@@ -16,5 +17,9 @@ export class CooldownFormComponent implements OnInit {
 
   create(lap: number, name: string) {
     this.createdTimerObject.emit(createInitializedTimer(name, lap));
+  }
+
+  saveAndReorder() {
+    this.saveAndReorderEvent.emit(true);
   }
 }

@@ -13,6 +13,10 @@ export class CooldownCardComponent implements OnInit {
   @Output() paused = new EventEmitter<boolean>();
   @Output() unpaused = new EventEmitter<boolean>();
 
+  get isActive() {
+    return this.timer.active && this.timer.intervalRef !== null;
+  }
+
   constructor(@Attribute('timer') timer: Timer) {
     this.timer = timer;
   }

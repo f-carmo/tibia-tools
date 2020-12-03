@@ -1,7 +1,7 @@
 <div class="card row-card">
     <div class="card-header text-white" 
-        [class.bg-success]="timer.active"
-        [class.bg-danger]="!timer.active || timer.intervalRef == null">
+        [class.bg-success]="isActive"
+        [class.bg-danger]="!isActive">
 
         {{ timer.name }}
 
@@ -13,7 +13,7 @@
         {{ timer.displayText }}
     </div>
     <div class="card-footer text-right">
-        <button type="button" class="btn btn-danger" (click)="reset()" *ngIf="timer.active">Resetar</button>
-        <button type="button" class="btn btn-success" (click)="activate()" *ngIf="!timer.active">Ativar</button>
+        <button type="button" class="btn btn-danger" (click)="reset()" *ngIf="isActive">Resetar</button>
+        <button type="button" class="btn btn-success" (click)="activate()" *ngIf="!isActive">Ativar</button>
     </div>
 </div>

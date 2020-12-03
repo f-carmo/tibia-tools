@@ -41,7 +41,9 @@ export class Timer {
     }
 
     resumeTimer() {
-        if (!this.isEnded()) {
+        if (this.isEnded()) {
+            this.pauseTimer();
+        } else {
             this.activateTimer();
         }
     }

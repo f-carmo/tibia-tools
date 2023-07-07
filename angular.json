@@ -117,5 +117,8 @@
         }
       }
     }},
-  "defaultProject": "tibia-tools"
+  "defaultProject": "tibia-tools",
+  "cli": {
+    "analytics": false
+  }
 }

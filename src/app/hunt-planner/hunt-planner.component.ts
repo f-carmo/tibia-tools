@@ -32,9 +32,9 @@ export class HuntPlannerComponent implements OnInit {
   }
 
   gerarResultado() {
-    const manaPerMinute = Math.floor(Number.parseInt(this.huntPotionsUsed) / Number.parseInt(this.huntHistoryTime));
-    const boltPerMinute = Math.floor(Number.parseInt(this.huntBoltsUsed) / Number.parseInt(this.huntHistoryTime));
-    const runesPerMinute = Math.floor(Number.parseInt(this.huntRunesUsed) / Number.parseInt(this.huntHistoryTime));
+    const manaPerMinute = Number.parseInt(this.huntPotionsUsed) / Number.parseInt(this.huntHistoryTime);
+    const boltPerMinute = Number.parseInt(this.huntBoltsUsed) / Number.parseInt(this.huntHistoryTime);
+    const runesPerMinute = Number.parseInt(this.huntRunesUsed) / Number.parseInt(this.huntHistoryTime);
 
     let resultMana = 0;
     let resultBolt = 0;
@@ -74,7 +74,7 @@ export class HuntPlannerComponent implements OnInit {
       }
     }
 
-    this.resultText = `Você vai precisar de ${resultMana} mana potions, ${resultBolt} bolts e ${resultRunes} runas de sua escolha`;
+    this.resultText = `Você vai precisar de ${Math.floor(resultMana)} mana potions, ${Math.floor(resultBolt)} bolts e ${Math.floor(resultRunes)} runas de sua escolha`;
   }
 
   isTimeDefined() {

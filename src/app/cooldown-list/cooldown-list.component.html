@@ -1,8 +1,6 @@
-<div class="row" >
-    <app-cooldown-card *ngFor="let cooldownCard of cooldownCardList"
-        [timer] = "cooldownCard.timer"
-        (destroy) = "removeCard($event)"
-        (paused) = "sortAndSave()"
-        (unpaused) = "sortAndSave()">
-    </app-cooldown-card>
-</div>
+<app-cooldown-card *ngFor="let cooldownCard of cooldownCardList"
+    [timer] = "cooldownCard.timer"
+    (destroy) = "removeCard($event)"
+    (paused) = "sortAndSave()"
+    (unpaused) = "sortAndSave()">
+</app-cooldown-card>

@@ -1,6 +1,6 @@
 import { Component, OnInit, ɵConsole } from '@angular/core';
 import { createNewCard } from '../cooldown-card/cooldown-card.component';
-import { createFromJSON, Timer } from '../model/timer';
+import { Timer } from '../model/timer';
 import { StorageComponent } from '../storage/storage.component';
 
 @Component({
@@ -30,9 +30,9 @@ export class CooldownListComponent implements OnInit {
 
   loadSavedCards() {
     StorageComponent.load().forEach(obj => {
-      this.cooldownCardList.push(createNewCard(createFromJSON(obj.timer)));
+      this.cooldownCardList.push(createNewCard(Timer.createFromJSON(obj.timer)));
     });
-    
+
     this.sortAndSave();
   }
 

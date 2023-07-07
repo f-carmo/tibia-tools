@@ -1,0 +1,9 @@
+<div class="card" style="width: 300px;">
+  <div class="card-body hunt-card" (click)="load()">
+    {{ hunt.name }}
+  </div>
+  <div class="card-footer text-right">
+    <button type="button" class="btn btn-info" (click)="merge(hunt.name)" style="margin-right: 5px">Merge</button>
+    <button type="button" class="btn btn-danger" (click)="deletar(hunt.name)">Deletar</button>
+  </div>
+</div>

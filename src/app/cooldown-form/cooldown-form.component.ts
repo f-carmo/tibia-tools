@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Timer, createInitializedTimer } from '../model/timer'
+import { Timer } from '../model/timer'
 
 @Component({
   selector: 'app-cooldown-form',
@@ -15,8 +15,9 @@ export class CooldownFormComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  create(lap: number, name: string) {
-    this.createdTimerObject.emit(createInitializedTimer(name, lap));
+  create(lap: number, type: string, floor: string, name: string, respawn: string) {
+    let parsedName = "(" + name + ") " + type + " " + floor + " " + respawn;
+    this.createdTimerObject.emit(Timer.createInitializedTimer(parsedName, lap));
   }
 
   saveAndReorder() {

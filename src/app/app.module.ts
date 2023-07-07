@@ -8,6 +8,9 @@ import { CooldownListComponent } from './cooldown-list/cooldown-list.component';
 import { CooldownFormComponent } from './cooldown-form/cooldown-form.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StorageComponent } from './storage/storage.component';
+import { HuntPlannerComponent } from './hunt-planner/hunt-planner.component';
+import { FormsModule } from '@angular/forms';
+import { HuntCardComponent } from './hunt-card/hunt-card.component';
 
 @NgModule({
   declarations: [
@@ -16,8 +19,11 @@ import { StorageComponent } from './storage/storage.component';
     CooldownListComponent,
     CooldownFormComponent,
     StorageComponent,
+    HuntPlannerComponent,
+    HuntCardComponent,
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
     NgbModule

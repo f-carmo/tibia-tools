@@ -4,23 +4,44 @@
     </div>
     <form style="padding: 5px 10px 0">
         <div class="form-group">
-            <label>Nome do timer</label>
+            <label>Seu nick</label>
             <input type="text" class="form-control" #timerName>
+        </div>
+        <div class="form-group">
+            <label>Andar</label>
+            <select class="form-control" #timerFloor>
+                <option value="1F">1F</option>
+                <option value="2F">2F</option>
+                <option value="3F">3F</option>
+                <option value="4F">4F</option>
+                <option value="5F">5F</option>
+                <option value="6F">6F</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Praça/Pico</label>
+            <select class="form-control" #timerType>
+                <option value="Praça">Praça</option>
+                <option value="Pico">Pico</option>
+            </select>
         </div>
         <div class="form-group">
             <label>Tempo do timer</label>
             <select class="form-control" #timerLap>
-                <option value="1">1 hora</option>
-                <option value="4">4 horas</option>
-                <option value="20">20 horas</option>
-                <option value="24">24 horas</option>
-                <option value="48">48 horas</option>
-                <option value="336">14 dias</option>
+                <option value="0.5">30 minutos</option>
+                <option value="1">60 minutos</option>
+                <option value="1.5">90 minutos</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Respawn</label>
+            <select class="form-control" #timerRespawn>
+                <option value="Experiencia 1">Experiencia 1</option>
             </select>
         </div>
         <div class="form-group text-right">
             <button type="button" class="btn btn-success" (click)="saveAndReorder()">Reordenar</button>
-            <button type="button" class="btn btn-success" (click)="create(timerLap.value, timerName.value)">Criar</button>
+            <button type="button" class="btn btn-success" (click)="create(timerLap.value, timerType.value, timerFloor.value, timerName.value, timerRespawn.value)">Criar</button>
         </div>
     </form>
 </div>

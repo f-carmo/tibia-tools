@@ -10,13 +10,27 @@ export class Timer {
     displayText: string;
     intervalRef: any;
 
-    constructor(name?: string, lap?: number, startTime?: Date, active?: boolean) {
+    private constructor(name?: string, lap?: number, startTime?: Date, active?: boolean) {
         this.lap = lap;
         this.startTime = startTime;
         this.name = name;
         this.active = active;
         this.id = Math.floor(Math.random() * (10000));
         this.setEndTime();
+    }
+
+    static createEmptyTimer(): Timer {
+        return new Timer();
+    }
+
+    static createFromJSON(jsonObject): Timer {
+        let timer = new Timer();
+        timer.JSONToObject(jsonObject);
+        return timer;
+    }
+
+    static createInitializedTimer(name: string, lap: number): Timer {
+        return new Timer(name, lap, new Date(), true);
     }
 
     calculateTimeLeft() {
@@ -118,18 +132,4 @@ export class Timer {
 
         this.setDefaultDisplayText();
     }
-}
-
-export function createEmptyTimer(): Timer {
-    return new Timer();
-}
-
-export function createFromJSON(jsonObject): Timer {
-    let timer = new Timer();
-    timer.JSONToObject(jsonObject);
-    return timer;
-}
-
-export function createInitializedTimer(name: string, lap: number): Timer {
-    return new Timer(name, lap, new Date(), true);
 }

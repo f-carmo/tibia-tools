@@ -1,0 +1,90 @@
+<div class="row">
+  <div class="col-md-4">
+    <label>Hunt history</label>
+    <div class="row">
+      <div class="col-md-12 form-group">
+        <label>Hunt name (optional)</label>
+        <input type="text" class="form-control" value="0" [(ngModel)]="huntName" name="_huntName" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 form-group">
+        <label>Time (in minutes)</label>
+        <input type="text" class="form-control" value="0" [(ngModel)]="huntHistoryTime" name="_huntHistoryTime" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 form-group">
+        <label>Mana potions used</label>
+        <input type="text" class="form-control" value="0" [(ngModel)]="huntPotionsUsed" name="_huntPotionsUsed" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 form-group">
+        <label>Bolts used</label>
+        <input type="text" class="form-control" value="0" [(ngModel)]="huntBoltsUsed" name="_huntBoltsUsed" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 form-group">
+        <label>Runes used</label>
+        <input type="text" class="form-control" value="0" [(ngModel)]="huntRunesUsed" name="_huntRunesUsed" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 form-group">
+        <button type="button" class="btn btn-control btn-success" (click)="saveHunt()">Salvar hunt</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <label>Hunt planning</label>
+    <div class="row">
+      <div class="col-md-12 form-group">
+        <label>Time (in minutes)</label>
+        <input type="text" class="form-control" value="0" [(ngModel)]="plannerMinutes" name="_plannerMinutes" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 form-group">
+        <label>Cap available</label>
+        <input type="text" class="form-control" value="0" [(ngModel)]="plannerCapacity" name="_plannerCapacity" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 form-group">
+        <button type="button" class="btn btn-control btn-success" (click)="gerarResultado()">Gerar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <label>Hunt results</label>
+    <div class="row">
+      <div class="col-md-12 form-group">
+        <p name="_results">
+          {{resultText}}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card-deck">
+  <app-hunt-card *ngFor="let hunt of huntsList"
+  [hunt]="hunt"
+  (loadThis)="loadHunt($event)"
+  (mergeHunt)="mergeHunt($event)"
+  (deleteHunt)="deleteHunt($event)"
+  >
+
+  </app-hunt-card>
+</div>

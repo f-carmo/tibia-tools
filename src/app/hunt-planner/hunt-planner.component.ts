@@ -12,7 +12,7 @@ export class HuntPlannerComponent implements OnInit {
 
   huntHistoryTime: string;
   huntPotionsUsed: string;
-  huntBoltsUsed: string;
+  huntArrowsUsed: string;
   huntRunesUsed: string;
   huntName: string;
 
@@ -22,7 +22,7 @@ export class HuntPlannerComponent implements OnInit {
   resultText: string;
 
   MANA_POTION_CAP = 3.1;
-  SPECTRAL_BOLT_CAP = 0.9;
+  DIAMOND_ARROW_CAP = 0.8;
   runeCap = 0;
 
   constructor() { }
@@ -33,7 +33,7 @@ export class HuntPlannerComponent implements OnInit {
 
   gerarResultado() {
     const manaPerMinute = Number.parseInt(this.huntPotionsUsed) / Number.parseInt(this.huntHistoryTime);
-    const boltPerMinute = Number.parseInt(this.huntBoltsUsed) / Number.parseInt(this.huntHistoryTime);
+    const arrowPerMinute = Number.parseInt(this.huntArrowsUsed) / Number.parseInt(this.huntHistoryTime);
     const runesPerMinute = Number.parseInt(this.huntRunesUsed) / Number.parseInt(this.huntHistoryTime);
 
     let resultMana = 0;
@@ -46,20 +46,20 @@ export class HuntPlannerComponent implements OnInit {
 
       while (plannerCapacityAux > 0 && plannerTimeAux > 0) {
         plannerTimeAux--;
-        plannerCapacityAux -= (manaPerMinute * this.MANA_POTION_CAP) + (boltPerMinute * this.SPECTRAL_BOLT_CAP) + (runesPerMinute * this.runeCap);
+        plannerCapacityAux -= (manaPerMinute * this.MANA_POTION_CAP) + (arrowPerMinute * this.DIAMOND_ARROW_CAP) + (runesPerMinute * this.runeCap);
 
         resultMana += manaPerMinute;
-        resultBolt += boltPerMinute;
+        resultBolt += arrowPerMinute;
         resultRunes += runesPerMinute;
       }
     } else if (this.isCapDefined()) {
       let plannerCapacityAux = Number.parseInt(this.plannerCapacity);
 
       while (plannerCapacityAux > 0) {
-        plannerCapacityAux -= (manaPerMinute * this.MANA_POTION_CAP) + (boltPerMinute * this.SPECTRAL_BOLT_CAP) + (runesPerMinute * this.runeCap);
+        plannerCapacityAux -= (manaPerMinute * this.MANA_POTION_CAP) + (arrowPerMinute * this.DIAMOND_ARROW_CAP) + (runesPerMinute * this.runeCap);
 
         resultMana += manaPerMinute;
-        resultBolt += boltPerMinute;
+        resultBolt += arrowPerMinute;
         resultRunes += runesPerMinute;
       }
     } else {
@@ -69,7 +69,7 @@ export class HuntPlannerComponent implements OnInit {
         plannerTimeAux--;
 
         resultMana += manaPerMinute;
-        resultBolt += boltPerMinute;
+        resultBolt += arrowPerMinute;
         resultRunes += runesPerMinute;
       }
     }
@@ -86,7 +86,7 @@ export class HuntPlannerComponent implements OnInit {
   }
 
   saveHunt() {
-    const hunt = Hunt.create(this.huntName, this.huntHistoryTime, this.huntPotionsUsed, this.huntBoltsUsed, this.huntRunesUsed);
+    const hunt = Hunt.create(this.huntName, this.huntHistoryTime, this.huntPotionsUsed, this.huntArrowsUsed, this.huntRunesUsed);
 
     if (this.isValid(hunt)) {
       const huntLookup = this.huntsList.filter(savedHunt => savedHunt.name === hunt.name).pop();
@@ -94,7 +94,7 @@ export class HuntPlannerComponent implements OnInit {
       if (huntLookup) {
         huntLookup.historyMinutes = hunt.historyMinutes;
         huntLookup.historyPotions = hunt.historyPotions;
-        huntLookup.historyBolts = hunt.historyBolts;
+        huntLookup.historyArrows = hunt.historyArrows;
         huntLookup.historyRunes = hunt.historyRunes;
       } else {
         this.huntsList.push(hunt);
@@ -115,12 +115,12 @@ export class HuntPlannerComponent implements OnInit {
 
       hunt.historyMinutes = hunt.historyMinutes + Number.parseInt(this.huntHistoryTime);
       hunt.historyPotions = hunt.historyPotions + Number.parseInt(this.huntPotionsUsed);
-      hunt.historyBolts = hunt.historyBolts + Number.parseInt(this.huntBoltsUsed);
+      hunt.historyArrows = hunt.historyArrows + Number.parseInt(this.huntArrowsUsed);
       hunt.historyRunes = hunt.historyRunes + Number.parseInt(this.huntRunesUsed);
 
       this.huntHistoryTime = hunt.historyMinutes.toString();
       this.huntPotionsUsed = hunt.historyPotions.toString();
-      this.huntBoltsUsed = hunt.historyBolts.toString();
+      this.huntArrowsUsed = hunt.historyArrows.toString();
       this.huntRunesUsed = hunt.historyRunes.toString();
 
       localStorage.removeItem('huntPlanner');
@@ -155,7 +155,7 @@ export class HuntPlannerComponent implements OnInit {
   loadHunt(hunt: Hunt) {
     this.huntHistoryTime = hunt.historyMinutes.toString();
     this.huntPotionsUsed = hunt.historyPotions.toString();
-    this.huntBoltsUsed = hunt.historyBolts.toString();
+    this.huntArrowsUsed = hunt.historyArrows.toString();
     this.huntRunesUsed = hunt.historyRunes.toString();
     this.huntName = hunt.name;
   }

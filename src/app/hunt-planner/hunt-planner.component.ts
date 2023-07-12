@@ -23,7 +23,7 @@ export class HuntPlannerComponent implements OnInit {
 
   MANA_POTION_CAP = 3.1;
   DIAMOND_ARROW_CAP = 0.8;
-  runeCap = 0;
+  AVALANCHE_CAP = 0.52;
 
   constructor() { }
 
@@ -46,7 +46,7 @@ export class HuntPlannerComponent implements OnInit {
 
       while (plannerCapacityAux > 0 && plannerTimeAux > 0) {
         plannerTimeAux--;
-        plannerCapacityAux -= (manaPerMinute * this.MANA_POTION_CAP) + (arrowPerMinute * this.DIAMOND_ARROW_CAP) + (runesPerMinute * this.runeCap);
+        plannerCapacityAux -= (manaPerMinute * this.MANA_POTION_CAP) + (arrowPerMinute * this.DIAMOND_ARROW_CAP) + (runesPerMinute * this.AVALANCHE_CAP);
 
         resultMana += manaPerMinute;
         resultBolt += arrowPerMinute;
@@ -56,7 +56,7 @@ export class HuntPlannerComponent implements OnInit {
       let plannerCapacityAux = Number.parseInt(this.plannerCapacity);
 
       while (plannerCapacityAux > 0) {
-        plannerCapacityAux -= (manaPerMinute * this.MANA_POTION_CAP) + (arrowPerMinute * this.DIAMOND_ARROW_CAP) + (runesPerMinute * this.runeCap);
+        plannerCapacityAux -= (manaPerMinute * this.MANA_POTION_CAP) + (arrowPerMinute * this.DIAMOND_ARROW_CAP) + (runesPerMinute * this.AVALANCHE_CAP);
 
         resultMana += manaPerMinute;
         resultBolt += arrowPerMinute;

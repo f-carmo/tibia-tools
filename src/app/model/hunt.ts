@@ -10,7 +10,7 @@ export class Hunt {
     hunt.name = jsonObject.name;
     hunt.historyMinutes = jsonObject.historyMinutes;
     hunt.historyPotions = jsonObject.historyPotions;
-    hunt.historyArrows = jsonObject.historyBolts;
+    hunt.historyArrows = jsonObject.historyArrows;
     hunt.historyRunes = jsonObject.historyRunes;
     return hunt;
   }

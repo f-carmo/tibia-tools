@@ -153,6 +153,7 @@ export class HuntPlannerComponent implements OnInit {
   }
 
   loadHunt(hunt: Hunt) {
+    console.log(hunt);
     this.huntHistoryTime = hunt.historyMinutes.toString();
     this.huntPotionsUsed = hunt.historyPotions.toString();
     this.huntArrowsUsed = hunt.historyArrows.toString();

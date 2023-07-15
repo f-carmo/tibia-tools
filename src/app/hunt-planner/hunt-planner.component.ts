@@ -40,6 +40,10 @@ export class HuntPlannerComponent implements OnInit {
     let resultBolt = 0;
     let resultRunes = 0;
 
+    console.log(manaPerMinute)
+    console.log(arrowPerMinute)
+    console.log(runesPerMinute)
+
     if (this.isTimeDefined() && this.isCapDefined()) {
       let plannerCapacityAux = Number.parseInt(this.plannerCapacity);
       let plannerTimeAux = Number.parseInt(this.plannerMinutes);
@@ -74,7 +78,7 @@ export class HuntPlannerComponent implements OnInit {
       }
     }
 
-    this.resultText = `Você vai precisar de ${Math.floor(resultMana)} mana potions, ${Math.floor(resultBolt)} bolts e ${Math.floor(resultRunes)} runas de sua escolha`;
+    this.resultText = `Você vai precisar de ${Math.floor(resultMana)} mana potions, ${Math.floor(resultBolt)} arrows e ${Math.floor(resultRunes)} runas de sua escolha`;
   }
 
   isTimeDefined() {

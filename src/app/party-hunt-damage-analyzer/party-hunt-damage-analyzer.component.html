@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-md-3">
+    <textarea name="_partyAnalyzer" [(ngModel)]="partyAnalyzer" rows="25" cols="25" (change)="analyze()"></textarea>
+  </div>
+  <div class="col-md-4">
+    <label>Damage results</label>
+    <p name="_dmgRes" [innerHtml]="damageResult">
+    </p>
+  </div>
+  <div class="col-md-4">
+    <label>Loot results</label>
+    <p name="_lootRess" [innerHtml]="lootResult">
+    </p>
+  </div>
+</div>

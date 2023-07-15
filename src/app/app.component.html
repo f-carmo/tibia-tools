@@ -1,7 +1,7 @@
 <body>
-    <div class="app-margin">
-        <div class="row">
-            <!--<div class="col-md-3">
+  <div class="app-margin">
+    <div class="row">
+      <!--<div class="col-md-3">
                 <app-cooldown-form
                     (createdTimerObject)="addTimerToList($event)"
                     (saveAndReorderEvent)="saveAndReorder()">
@@ -14,12 +14,17 @@
                 </app-cooldown-list>
             </div>-->
 
-            <div class="col-md-12">
-              <app-hunt-planner>
-                
-              </app-hunt-planner>
-            </div>
-        </div>
+      <div class="col-md-12">
+        <app-hunt-planner>
+
+        </app-hunt-planner>
+      </div>
+      <div class="col-md-12">
+        <app-party-hunt-damage-analyzer>
+
+        </app-party-hunt-damage-analyzer>
+      </div>
     </div>
+  </div>
 </body>
 <router-outlet></router-outlet>

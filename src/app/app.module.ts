@@ -11,6 +11,7 @@ import { StorageComponent } from './storage/storage.component';
 import { HuntPlannerComponent } from './hunt-planner/hunt-planner.component';
 import { FormsModule } from '@angular/forms';
 import { HuntCardComponent } from './hunt-card/hunt-card.component';
+import { PartyHuntDamageAnalyzerComponent } from './party-hunt-damage-analyzer/party-hunt-damage-analyzer.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { HuntCardComponent } from './hunt-card/hunt-card.component';
     StorageComponent,
     HuntPlannerComponent,
     HuntCardComponent,
+    PartyHuntDamageAnalyzerComponent,
   ],
   imports: [
     FormsModule,

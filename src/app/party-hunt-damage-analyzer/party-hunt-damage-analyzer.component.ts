@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import html2canvas from 'html2canvas';
 
 const DMG_CUTOFF = 0.6
 const HEALING_CUTOFF = 0.5
@@ -39,11 +40,8 @@ export class Character {
     return Math.floor(this.damage / this.level);
   }
 
-  isBelowAverage(dmgAverage, healingAverage) {
+  isBelowAverage(dmgAverage) {
     if (['EK'].includes(this.translateVocation())) return false;
-
-    console.log(this.name, ' ', this.calculateDPL() < (dmgAverage * DMG_CUTOFF))
-
     return this.calculateDPL() < (dmgAverage * DMG_CUTOFF);
   }
 }
@@ -54,6 +52,8 @@ export class Character {
   styleUrls: ['./party-hunt-damage-analyzer.component.css']
 })
 export class PartyHuntDamageAnalyzerComponent {
+  @ViewChildren('specificElement') specificElements: QueryList<ElementRef>;
+  @ViewChild('captureThis', { static: true }) captureElementRef: ElementRef;
 
   partyAnalyzer: string;
   damageResult: string = '';
@@ -110,6 +110,10 @@ export class PartyHuntDamageAnalyzerComponent {
         });
 
         this.calculateShootersAverageDamage();
+
+        setTimeout(() => {
+          this.captureAndCopy();
+        }, 100);
       }
     });
 
@@ -134,6 +138,28 @@ export class PartyHuntDamageAnalyzerComponent {
     this.finalDplAverage = Math.floor(this.finalDplAverage / this.finalCharactersArray.length);
   }
 
+  captureAndCopy() {
+    const element = this.captureElementRef.nativeElement;
+
+    html2canvas(element).then((canvas) => {
+      // Convert the canvas to an image Blob
+      canvas.toBlob((blob) => {
+        if (blob) {
+          // Create a ClipboardItem with the image Blob
+          const clipboardItems = [
+            new ClipboardItem({ [blob.type]: blob })
+          ];
+
+          // Write the ClipboardItem to the clipboard
+          navigator.clipboard.write(clipboardItems).then(() => {
+            console.log('Screenshot copied to clipboard.');
+          }).catch((error) => {
+            console.error('Error copying to clipboard:', error);
+          });
+        }
+      }, 'image/png');
+    });
+  }
 
   sortDamageAscending(a, b) {
     if (a.Damage < b.Damage) {

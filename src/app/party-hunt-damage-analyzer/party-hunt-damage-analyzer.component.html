@@ -3,14 +3,17 @@
     <textarea name="_partyAnalyzer" [(ngModel)]="partyAnalyzer" rows="25" cols="25" (change)="analyze()"></textarea>
   </div>
   <div class="col-md-9">
-    <label>Damage results - Shooter DPL: {{ finalDplAverage }} - Vermelho se abaixo de 60% da média ({{ finalDplAverage
-      * 0.6 }})</label>
+    <label>
+      Damage results<br>
+      Shooter DPL: {{ finalDplAverage }} - Vermelho se abaixo de 60% da média ({{ finalDplAverage * 0.6 }})
+    </label>
     <table class="paleBlueRows">
       <tr>
         <th>Nome</th>
         <th>Classe</th>
         <th>Nivel</th>
         <th>Dano</th>
+        <th>healing</th>
         <th>DPL</th>
       </tr>
       <tr *ngFor="let character of finalCharactersArray"
@@ -19,6 +22,7 @@
         <td>{{ character.translateVocation() }}</td>
         <td>{{ character.level }}</td>
         <td>{{ character.damage }}</td>
+        <td>{{ character.healing }}</td>
         <td>{{ character.calculateDPL() }}</td>
       </tr>
     </table>

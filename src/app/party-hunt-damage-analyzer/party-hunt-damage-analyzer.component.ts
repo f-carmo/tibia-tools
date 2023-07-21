@@ -3,11 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+const DMG_CUTOFF = 0.6
+const HEALING_CUTOFF = 0.5
+
 export class Character {
   name;
   damage;
   vocation;
   level;
+  healing;
   vocationEnumFodasse = {
     'Master Sorcerer': "MS",
     'Sorcerer': "MS",
@@ -19,11 +23,12 @@ export class Character {
     'Knight': "EK",
   }
 
-  constructor(name, damage, vocation, level) {
+  constructor(name, damage, vocation, level, healing) {
     this.name = name;
     this.damage = damage;
     this.vocation = vocation;
     this.level = level;
+    this.healing = healing;
   }
 
   translateVocation() {
@@ -34,9 +39,12 @@ export class Character {
     return Math.floor(this.damage / this.level);
   }
 
-  isBelowAverage(average) {
-    if (['ED', 'EK'].includes(this.translateVocation())) return false;
-    return this.calculateDPL() < (average * 0.6);
+  isBelowAverage(dmgAverage, healingAverage) {
+    if (['EK'].includes(this.translateVocation())) return false;
+
+    console.log(this.name, ' ', this.calculateDPL() < (dmgAverage * DMG_CUTOFF))
+
+    return this.calculateDPL() < (dmgAverage * DMG_CUTOFF);
   }
 }
 
@@ -53,6 +61,7 @@ export class PartyHuntDamageAnalyzerComponent {
 
   finalCharactersArray = [];
   finalDplAverage = 0;
+  finalHealingAverage = 0;
 
   constructor(private http: HttpClient) {
 
@@ -62,6 +71,8 @@ export class PartyHuntDamageAnalyzerComponent {
     this.finalCharactersArray = [];
     this.damageResult = '';
     this.finalDplAverage = 0;
+    this.finalHealingAverage = 0;
+
     const lines = this.partyAnalyzer.split('\n').slice(6); // Discard the first six lines
     const objects = [];
 
@@ -79,7 +90,7 @@ export class PartyHuntDamageAnalyzerComponent {
         Supplies: supplies,
         Balance: balance,
         Damage: Number.parseInt(damage.replace(',', '')),
-        Healing: healing,
+        Healing: Number.parseInt(healing.replace(',', '')),
       });
     }
 
@@ -95,7 +106,7 @@ export class PartyHuntDamageAnalyzerComponent {
 
           const res = objects.find(obj => obj.Name === fetchedCharacterName);
 
-          this.finalCharactersArray.push(new Character(fetchedCharacterName, res.Damage, fetchedCharacterVocation, fetchedCharacterLevel));
+          this.finalCharactersArray.push(new Character(fetchedCharacterName, res.Damage, fetchedCharacterVocation, fetchedCharacterLevel, res.Healing));
         });
 
         this.calculateShootersAverageDamage();

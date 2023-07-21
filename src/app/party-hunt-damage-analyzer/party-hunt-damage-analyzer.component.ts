@@ -96,27 +96,11 @@ export class PartyHuntDamageAnalyzerComponent {
           const res = objects.find(obj => obj.Name === fetchedCharacterName);
 
           this.finalCharactersArray.push(new Character(fetchedCharacterName, res.Damage, fetchedCharacterVocation, fetchedCharacterLevel));
-
-          this.damageResult += `<a href='https://www.tibia.com/community/?name=${res.Name}'>${res.Name}<a/> bateu ${res.Damage}, classe: ${fetchedCharacterVocation}, nível: ${fetchedCharacterLevel}<br>`;
         });
 
-        // calcular média shooter
         this.calculateShootersAverageDamage();
-
-      },
-      error: (e) => {
-        objects.sort(this.sortDamageAscending)
-        objects.forEach(obj => {
-          this.damageResult += `<a href='https://www.tibia.com/community/?name=${obj.Name}'>${obj.Name}<a/> bateu ${obj.Damage}<br>`;
-        });
-
-        objects.sort(this.sortLootDescending)
-        objects.forEach(obj => {
-          this.lootResult += `<a href='https://www.tibia.com/community/?name=${obj.Name}'>${obj.Name}<a/> looteou ${obj.Loot}<br>`;
-        });
       }
-    }
-    );
+    });
 
 
     /*

@@ -1,4 +1,44 @@
 import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { forkJoin, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+export class Character {
+  name;
+  damage;
+  vocation;
+  level;
+  vocationEnumFodasse = {
+    'Master Sorcerer': "MS",
+    'Sorcerer': "MS",
+    'Elder Druid': "ED",
+    'Druid': "ED",
+    'Royal Paladin': "RP",
+    'Paladin': "RP",
+    'Elite Knight': "EK",
+    'Knight': "EK",
+  }
+
+  constructor(name, damage, vocation, level) {
+    this.name = name;
+    this.damage = damage;
+    this.vocation = vocation;
+    this.level = level;
+  }
+
+  translateVocation() {
+    return this.vocationEnumFodasse[this.vocation];
+  }
+
+  calculateDPL() {
+    return Math.floor(this.damage / this.level);
+  }
+
+  isBelowAverage(average) {
+    if (['ED', 'EK'].includes(this.translateVocation())) return false;
+    return this.calculateDPL() < (average * 0.6);
+  }
+}
 
 @Component({
   selector: 'app-party-hunt-damage-analyzer',
@@ -11,8 +51,17 @@ export class PartyHuntDamageAnalyzerComponent {
   damageResult: string = '';
   lootResult: string = '';
 
+  finalCharactersArray = [];
+  finalDplAverage = 0;
+
+  constructor(private http: HttpClient) {
+
+  }
 
   analyze() {
+    this.finalCharactersArray = [];
+    this.damageResult = '';
+    this.finalDplAverage = 0;
     const lines = this.partyAnalyzer.split('\n').slice(6); // Discard the first six lines
     const objects = [];
 
@@ -25,7 +74,7 @@ export class PartyHuntDamageAnalyzerComponent {
       const healing = lines[i + 5].split(':')[1].trim();
 
       objects.push({
-        Name: key,
+        Name: key.replace(" (Leader)", ""),
         Loot: Number.parseInt(loot.replace(',', '')),
         Supplies: supplies,
         Balance: balance,
@@ -34,8 +83,44 @@ export class PartyHuntDamageAnalyzerComponent {
       });
     }
 
+    objects.sort(this.sortDamageAscending);
+
+    this.fetchDataForObjects(objects).subscribe({
+      next: (response) => {
+
+        response.forEach(character => {
+          const fetchedCharacterName = character.characters.character.name;
+          const fetchedCharacterVocation = character.characters.character.vocation;
+          const fetchedCharacterLevel = character.characters.character.level;
+
+          const res = objects.find(obj => obj.Name === fetchedCharacterName);
+
+          this.finalCharactersArray.push(new Character(fetchedCharacterName, res.Damage, fetchedCharacterVocation, fetchedCharacterLevel));
+
+          this.damageResult += `<a href='https://www.tibia.com/community/?name=${res.Name}'>${res.Name}<a/> bateu ${res.Damage}, classe: ${fetchedCharacterVocation}, nível: ${fetchedCharacterLevel}<br>`;
+        });
+
+        // calcular média shooter
+        this.calculateShootersAverageDamage();
+
+      },
+      error: (e) => {
+        objects.sort(this.sortDamageAscending)
+        objects.forEach(obj => {
+          this.damageResult += `<a href='https://www.tibia.com/community/?name=${obj.Name}'>${obj.Name}<a/> bateu ${obj.Damage}<br>`;
+        });
+
+        objects.sort(this.sortLootDescending)
+        objects.forEach(obj => {
+          this.lootResult += `<a href='https://www.tibia.com/community/?name=${obj.Name}'>${obj.Name}<a/> looteou ${obj.Loot}<br>`;
+        });
+      }
+    }
+    );
+
+
+    /*
     objects.sort(this.sortDamageAscending)
-    //https://www.tibia.com/community/?name=setsuni
     objects.forEach(obj => {
       this.damageResult += `<a href='https://www.tibia.com/community/?name=${obj.Name}'>${obj.Name}<a/> bateu ${obj.Damage}<br>`;
     })
@@ -44,7 +129,16 @@ export class PartyHuntDamageAnalyzerComponent {
     objects.forEach(obj => {
       this.lootResult += `<a href='https://www.tibia.com/community/?name=${obj.Name}'>${obj.Name}<a/> looteou ${obj.Loot}<br>`;
     })
+    */
   }
+
+  calculateShootersAverageDamage() {
+    this.finalCharactersArray.forEach(character => {
+      this.finalDplAverage += character.calculateDPL();
+    });
+    this.finalDplAverage = Math.floor(this.finalDplAverage / this.finalCharactersArray.length);
+  }
+
 
   sortDamageAscending(a, b) {
     if (a.Damage < b.Damage) {
@@ -65,5 +159,23 @@ export class PartyHuntDamageAnalyzerComponent {
       return -1;
     }
     return 0;
+  }
+
+  fetchDataForObjects(objects: any[]): Observable<any[]> {
+    // Create an array to store individual HTTP requests
+    const httpRequests: Observable<any>[] = [];
+
+    // Loop through the array of objects and create an HTTP request for each object
+    for (const obj of objects) {
+      // Replace 'yourApiEndpoint' with your actual API endpoint URL for each object
+      const apiUrl = `https://api.tibiadata.com/v3/character/${obj.Name}`;
+
+      // Push the HTTP request Observable to the array
+      httpRequests.push(this.http.get(apiUrl));
+    }
+
+    // Use forkJoin to wait for all the HTTP requests to complete
+    // and combine their results into a single Observable
+    return forkJoin(httpRequests);
   }
 }

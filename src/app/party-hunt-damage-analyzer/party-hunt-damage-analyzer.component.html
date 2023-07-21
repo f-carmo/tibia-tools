@@ -2,14 +2,25 @@
   <div class="col-md-3">
     <textarea name="_partyAnalyzer" [(ngModel)]="partyAnalyzer" rows="25" cols="25" (change)="analyze()"></textarea>
   </div>
-  <div class="col-md-4">
-    <label>Damage results</label>
-    <p name="_dmgRes" [innerHtml]="damageResult">
-    </p>
-  </div>
-  <div class="col-md-4">
-    <label>Loot results</label>
-    <p name="_lootRess" [innerHtml]="lootResult">
-    </p>
+  <div class="col-md-9">
+    <label>Damage results - Shooter DPL: {{ finalDplAverage }} - Vermelho se abaixo de 60% da média ({{ finalDplAverage
+      * 0.6 }})</label>
+    <table class="paleBlueRows">
+      <tr>
+        <th>Nome</th>
+        <th>Classe</th>
+        <th>Nivel</th>
+        <th>Dano</th>
+        <th>DPL</th>
+      </tr>
+      <tr *ngFor="let character of finalCharactersArray"
+        [ngClass]="{ 'table-danger': character.isBelowAverage(finalDplAverage) }">
+        <td>{{ character.name }}</td>
+        <td>{{ character.translateVocation() }}</td>
+        <td>{{ character.level }}</td>
+        <td>{{ character.damage }}</td>
+        <td>{{ character.calculateDPL() }}</td>
+      </tr>
+    </table>
   </div>
 </div>

@@ -14,6 +14,7 @@ export class HuntPlannerComponent implements OnInit {
   huntPotionsUsed: string;
   huntArrowsUsed: string;
   huntRunesUsed: string;
+  huntSpiritsUsed: string;
   huntName: string;
 
   plannerMinutes: string;
@@ -24,6 +25,7 @@ export class HuntPlannerComponent implements OnInit {
   MANA_POTION_CAP = 3.1;
   DIAMOND_ARROW_CAP = 0.8;
   AVALANCHE_CAP = 0.52;
+  ULTIMATE_SPIRIT_CAP = 3.1;
 
   constructor() { }
 
@@ -35,14 +37,12 @@ export class HuntPlannerComponent implements OnInit {
     const manaPerMinute = Number.parseInt(this.huntPotionsUsed) / Number.parseInt(this.huntHistoryTime);
     const arrowPerMinute = Number.parseInt(this.huntArrowsUsed) / Number.parseInt(this.huntHistoryTime);
     const runesPerMinute = Number.parseInt(this.huntRunesUsed) / Number.parseInt(this.huntHistoryTime);
+    const spiritsPerMinute = Number.parseInt(this.huntSpiritsUsed) / Number.parseInt(this.huntHistoryTime);
 
     let resultMana = 0;
     let resultBolt = 0;
     let resultRunes = 0;
-
-    console.log(manaPerMinute)
-    console.log(arrowPerMinute)
-    console.log(runesPerMinute)
+    let resultSpirits = 0;
 
     if (this.isTimeDefined() && this.isCapDefined()) {
       let plannerCapacityAux = Number.parseInt(this.plannerCapacity);
@@ -50,21 +50,23 @@ export class HuntPlannerComponent implements OnInit {
 
       while (plannerCapacityAux > 0 && plannerTimeAux > 0) {
         plannerTimeAux--;
-        plannerCapacityAux -= (manaPerMinute * this.MANA_POTION_CAP) + (arrowPerMinute * this.DIAMOND_ARROW_CAP) + (runesPerMinute * this.AVALANCHE_CAP);
+        plannerCapacityAux -= (manaPerMinute * this.MANA_POTION_CAP) + (arrowPerMinute * this.DIAMOND_ARROW_CAP) + (runesPerMinute * this.AVALANCHE_CAP) + (spiritsPerMinute * this.ULTIMATE_SPIRIT_CAP);
 
         resultMana += manaPerMinute;
         resultBolt += arrowPerMinute;
         resultRunes += runesPerMinute;
+        resultSpirits += spiritsPerMinute;
       }
     } else if (this.isCapDefined()) {
       let plannerCapacityAux = Number.parseInt(this.plannerCapacity);
 
       while (plannerCapacityAux > 0) {
-        plannerCapacityAux -= (manaPerMinute * this.MANA_POTION_CAP) + (arrowPerMinute * this.DIAMOND_ARROW_CAP) + (runesPerMinute * this.AVALANCHE_CAP);
+        plannerCapacityAux -= (manaPerMinute * this.MANA_POTION_CAP) + (arrowPerMinute * this.DIAMOND_ARROW_CAP) + (runesPerMinute * this.AVALANCHE_CAP) + (spiritsPerMinute * this.ULTIMATE_SPIRIT_CAP);
 
         resultMana += manaPerMinute;
         resultBolt += arrowPerMinute;
         resultRunes += runesPerMinute;
+        resultSpirits += spiritsPerMinute;
       }
     } else {
       let plannerTimeAux = Number.parseInt(this.plannerMinutes);
@@ -75,10 +77,11 @@ export class HuntPlannerComponent implements OnInit {
         resultMana += manaPerMinute;
         resultBolt += arrowPerMinute;
         resultRunes += runesPerMinute;
+        resultSpirits += spiritsPerMinute;
       }
     }
 
-    this.resultText = `Você vai precisar de ${Math.floor(resultMana)} mana potions, ${Math.floor(resultBolt)} arrows e ${Math.floor(resultRunes)} runas de sua escolha`;
+    this.resultText = `Você vai precisar de ${Math.floor(resultMana)} mana potions e ${Math.floor(resultSpirits)} ultimate spirits, ${Math.floor(resultBolt)} arrows, ${Math.floor(resultRunes)} runas de sua escolha.`;
   }
 
   isTimeDefined() {
@@ -90,16 +93,23 @@ export class HuntPlannerComponent implements OnInit {
   }
 
   saveHunt() {
-    const hunt = Hunt.create(this.huntName, this.huntHistoryTime, this.huntPotionsUsed, this.huntArrowsUsed, this.huntRunesUsed);
+    const hunt = Hunt.create(this.huntName, this.huntHistoryTime, this.huntPotionsUsed, this.huntArrowsUsed, this.huntRunesUsed, this.huntSpiritsUsed);
 
     if (this.isValid(hunt)) {
       const huntLookup = this.huntsList.filter(savedHunt => savedHunt.name === hunt.name).pop();
 
       if (huntLookup) {
-        huntLookup.historyMinutes = hunt.historyMinutes;
-        huntLookup.historyPotions = hunt.historyPotions;
-        huntLookup.historyArrows = hunt.historyArrows;
-        huntLookup.historyRunes = hunt.historyRunes;
+        if (confirm(`A hunt ${hunt.name} já existe. Deseja mergea-la?`)) {
+          this.mergeHunt(hunt.name);
+          return;
+        } else {
+          huntLookup.historyMinutes = hunt.historyMinutes;
+          huntLookup.historyPotions = hunt.historyPotions;
+          huntLookup.historyArrows = hunt.historyArrows;
+          huntLookup.historyRunes = hunt.historyRunes;
+          huntLookup.historySpirits = hunt.historySpirits;
+        }
+        
       } else {
         this.huntsList.push(hunt);
       }
@@ -121,11 +131,13 @@ export class HuntPlannerComponent implements OnInit {
       hunt.historyPotions = hunt.historyPotions + Number.parseInt(this.huntPotionsUsed);
       hunt.historyArrows = hunt.historyArrows + Number.parseInt(this.huntArrowsUsed);
       hunt.historyRunes = hunt.historyRunes + Number.parseInt(this.huntRunesUsed);
+      hunt.historySpirits = hunt.historySpirits + Number.parseInt(this.huntSpiritsUsed);
 
       this.huntHistoryTime = hunt.historyMinutes.toString();
       this.huntPotionsUsed = hunt.historyPotions.toString();
       this.huntArrowsUsed = hunt.historyArrows.toString();
       this.huntRunesUsed = hunt.historyRunes.toString();
+      this.huntSpiritsUsed = hunt.historySpirits.toString();
 
       localStorage.removeItem('huntPlanner');
       localStorage.setItem('huntPlanner', JSON.stringify(this.huntsList));
@@ -162,6 +174,7 @@ export class HuntPlannerComponent implements OnInit {
     this.huntPotionsUsed = hunt.historyPotions.toString();
     this.huntArrowsUsed = hunt.historyArrows.toString();
     this.huntRunesUsed = hunt.historyRunes.toString();
+    this.huntSpiritsUsed = hunt.historySpirits.toString();
     this.huntName = hunt.name;
   }
 }

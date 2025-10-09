@@ -1,7 +1,6 @@
 import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
-import html2canvas from 'html2canvas';
 import { FormsModule } from '@angular/forms';
 import { NgClass } from '@angular/common';
 
@@ -143,25 +142,6 @@ export class PartyHuntDamageAnalyzerComponent {
 
   captureAndCopy() {
     const element = this.captureElementRef.nativeElement;
-
-    html2canvas(element).then((canvas) => {
-      // Convert the canvas to an image Blob
-      canvas.toBlob((blob) => {
-        if (blob) {
-          // Create a ClipboardItem with the image Blob
-          const clipboardItems = [
-            new ClipboardItem({ [blob.type]: blob })
-          ];
-
-          // Write the ClipboardItem to the clipboard
-          navigator.clipboard.write(clipboardItems).then(() => {
-            console.log('Screenshot copied to clipboard.');
-          }).catch((error) => {
-            console.error('Error copying to clipboard:', error);
-          });
-        }
-      }, 'image/png');
-    });
   }
 
   sortDamageAscending(a, b) {

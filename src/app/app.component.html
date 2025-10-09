@@ -1,35 +1,11 @@
-<body>
-  <div class="app-margin">
-    <div class="row">
-      <!--<div class="col-md-3">
-                <app-cooldown-form
-                    (createdTimerObject)="addTimerToList($event)"
-                    (saveAndReorderEvent)="saveAndReorder()">
-
-                </app-cooldown-form>
-            </div>
-            <div class="col-md-9">
-                <app-cooldown-list>
-
-                </app-cooldown-list>
-            </div>-->
-
-      <div class="col-md-12">
-        <app-hunt-planner>
-
-        </app-hunt-planner>
-      </div>
-    </div>
-
-    <br /><br /><br />
-    <div class="row">
-      <label>Warzone Partyhunt Analyzer</label>
-      <div class="col-md-12">
-        <app-party-hunt-damage-analyzer>
-
-        </app-party-hunt-damage-analyzer>
-      </div>
-    </div>
+<div class="main-layout">
+  <nav class="sidebar">
+    <h2>Tibia Tools</h2>
+    <button routerLink="/hunt-planner">Hunt Planner</button>
+    <button routerLink="/party-hunt-damage-analyzer">Party Hunt Damage Analyzer</button>
+    <button routerLink="/guild-scripts">Guild Scripts</button>
+  </nav>
+  <div class="content-area">
+    <router-outlet></router-outlet>
   </div>
-</body>
-<router-outlet></router-outlet>
+</div>

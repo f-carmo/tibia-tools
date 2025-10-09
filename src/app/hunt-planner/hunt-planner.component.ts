@@ -81,7 +81,11 @@ export class HuntPlannerComponent implements OnInit {
       }
     }
 
-    this.resultText = `Você vai precisar de ${Math.floor(resultMana)} mana potions e ${Math.floor(resultSpirits)} ultimate spirits, ${Math.floor(resultBolt)} arrows, ${Math.floor(resultRunes)} runas de sua escolha.`;
+    this.resultText = `Você vai precisar de:
+      <br>- ${Math.floor(resultMana)} mana potions
+      <br>- ${Math.floor(resultSpirits)} ultimate spirits
+      <br>- ${Math.floor(resultBolt)} arrows
+      <br>- ${Math.floor(resultRunes)} runas`;
   }
 
   isTimeDefined() {
@@ -169,7 +173,6 @@ export class HuntPlannerComponent implements OnInit {
   }
 
   loadHunt(hunt: Hunt) {
-    console.log(hunt);
     this.huntHistoryTime = hunt.historyMinutes.toString();
     this.huntPotionsUsed = hunt.historyPotions.toString();
     this.huntArrowsUsed = hunt.historyArrows.toString();

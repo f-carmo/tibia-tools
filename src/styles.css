@@ -1,1 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
+/* Basic Dark Theme */
+body {
+  background-color: #181818;
+  color: #e0e0e0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+  color: #90caf9;
+}
+
+button, input, select, textarea {
+  background-color: #232323;
+  color: #e0e0e0;
+  border: 1px solid #444;
+}
+
+.card, .container, .panel, .modal-content {
+  background-color: #222;
+  color: #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  border: 1px solid #333;
+    padding: 15px;
+}
+
+::-webkit-scrollbar {
+  background: #222;
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}

@@ -1,0 +1,114 @@
+.guild-scripts-layout {
+  background: #222;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  border: 1px solid #333;
+  padding: 20px 16px;
+  margin: 24px 0;
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.guild-scripts-layout h3 {
+  color: #90caf9;
+  font-size: 1.2em;
+  margin-bottom: 12px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  margin-bottom: 4px;
+  color: #b0b0b0;
+  font-size: 0.98em;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  background: #232323;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  border-radius: 4px;
+  padding: 5px 8px;
+  font-size: 0.98em;
+  width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+.checkbox-inline {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.98em;
+}
+
+.button-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.action-btn {
+margin-right: 5px;
+  padding: 7px 18px;
+  background: #333;
+  color: #90caf9;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 1em;
+  transition: background 0.2s;
+  min-width: 100px;
+  text-align: center;
+}
+
+.action-btn:hover {
+  background: #444;
+}
+
+.action-btn.danger {
+  background: #c62828;
+  color: #fff;
+}
+
+.action-btn.danger:hover {
+  background: #b71c1c;
+}
+
+.logs-section {
+  margin-top: 10px;
+  padding: 14px 10px;
+}
+
+.logs-section h4 {
+  color: #90caf9;
+  margin-bottom: 8px;
+  font-size: 1.05em;
+}
+
+.result-box {
+  background: #181818;
+  border-radius: 4px;
+  padding: 10px;
+  color: #e0e0e0;
+  border: 1px solid #333;
+  min-height: 32px;
+  font-size: 0.97em;
+}
+
+.checkbox-inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}

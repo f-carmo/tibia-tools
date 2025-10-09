@@ -1,0 +1,36 @@
+<div class="guild-scripts-layout">
+  <h3>Guild Scripts</h3>
+  <form>
+    <div class="form-group">
+      <label for="guildName">Nome da Guilda</label>
+      <input id="guildName" type="text" [(ngModel)]="guildName" name="guildName" />
+    </div>
+    <div class="form-group">
+      <label for="minLevel">Nível mínimo</label>
+      <input id="minLevel" type="number" [(ngModel)]="minLevel" name="minLevel" />
+    </div>
+    <div class="form-group">
+      <label for="daysOffline">Dias offline</label>
+      <input id="daysOffline" type="number" [(ngModel)]="daysOffline" name="daysOffline" />
+    </div>
+    <div class="form-group checkbox-inline">
+      <label>Tipo de Conta</label>
+      <input type="checkbox" id="free" name="accountType" [(ngModel)]="isFreeAccount" />
+      <span>Free</span>
+    </div>
+    <div class="form-group">
+      <label for="cookies">Cookies</label>
+      <input id="cookies" type="text" [(ngModel)]="cookies" name="cookies" />
+    </div>
+    <div class="button-row">
+      <button type="button" class="action-btn" (click)="execMockRun()">Mock run</button>
+      <button type="button" class="action-btn danger" (click)="execRun()">Real run</button>
+    </div>
+  </form>
+  <section class="planner-card logs-section">
+    <h4>Logs</h4>
+    <div class="result-box">
+      <p>Logs da aplicação aparecerão aqui...</p>
+    </div>
+  </section>
+</div>

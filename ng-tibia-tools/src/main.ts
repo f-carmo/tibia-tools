@@ -1,12 +1,22 @@
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
+import { provideAnimations } from '@angular/platform-browser/animations'; // ✅ Angular 20 style
+import { importProvidersFrom } from '@angular/core';
+import { ToastrModule } from 'ngx-toastr';
 
-import { AppModule } from './app/app.module';
-import { environment } from './environments/environment';
+import { AppComponent } from './app/app.component';
+import { routes } from './app/app.routes';
 
-if (environment.production) {
-  enableProdMode();
-}
-
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideRouter(routes),
+    provideAnimations(), // ✅ enables animations engine
+    importProvidersFrom(
+      ToastrModule.forRoot({
+        positionClass: 'toast-top-right',
+        timeOut: 2000,
+        progressBar: true
+      })
+    )
+  ]
+}).catch(err => console.error(err));

@@ -1,4 +1,54 @@
-.hunt-card:hover {
-  background-color: darksalmon;
-  cursor: pointer;
+.card:not(.selected-card):hover {
+  background: #2c313a;
+  border-color: #0099cc;
+  box-shadow: 0 0 12px #0099cc88;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.selected-card {
+  border: 2px solid #00bfff;
+  background: #23272f;
+  box-shadow: 0 0 8px #00bfff55;
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.card-btn {
+  flex: 1 1 100%;
+  padding: 8px 0;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: none;
+  background: #23272f;
+  color: #fff;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px #0002;
+}
+
+.card-btn:hover {
+  background: #2c313a;
+}
+
+.card-btn.merge {
+  background: #176ca1;
+  color: #eaf6ff;
+  box-shadow: 0 0 8px #176ca155;
+}
+
+.card-btn.merge:hover {
+  background: #114d75;
+}
+
+.card-btn.delete {
+  background: #a13b3b;
+  color: #ffeaea;
+  box-shadow: 0 0 8px #a13b3b55;
+}
+
+.card-btn.delete:hover {
+  background: #752828;
 }

@@ -6,6 +6,10 @@ body {
   margin-bottom: 60px;
 }
 
+.active {
+  background: #333;
+}
+
 .footer {
   position: absolute;
   padding: 0 30px;
@@ -74,4 +78,38 @@ hr {
 .content-area {
   flex: 1;
   padding: 32px;
+}
+
+.hunt-card.wave-active::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #00bfff88 0%, #23272f00 80%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  animation: wave-explode 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes wave-explode {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  70% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(2.5);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(4);
+  }
+}
+
+.toast-container {
+  z-index: 99999 !important;
 }

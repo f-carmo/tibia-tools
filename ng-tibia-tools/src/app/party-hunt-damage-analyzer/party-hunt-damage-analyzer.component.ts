@@ -1,8 +1,9 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import html2canvas from 'html2canvas';
+import { FormsModule } from '@angular/forms';
+import { NgClass } from '@angular/common';
 
 const DMG_CUTOFF = 0.6
 const HEALING_CUTOFF = 0.5
@@ -48,6 +49,8 @@ export class Character {
 
 @Component({
   selector: 'app-party-hunt-damage-analyzer',
+  standalone: true,
+  imports: [FormsModule, NgClass],
   templateUrl: './party-hunt-damage-analyzer.component.html',
   styleUrls: ['./party-hunt-damage-analyzer.component.css']
 })

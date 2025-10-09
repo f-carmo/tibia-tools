@@ -1,33 +1,63 @@
 <div class="hunt-planner-layout">
   <div class="planner-sections">
     <!-- Hunt History -->
-    <section class="planner-card">
+    <section class="history-card">
       <h3>Hunt History</h3>
+
       <div class="form-group">
-        <label>Hunt name (optional)</label>
-        <input type="text" [(ngModel)]="huntName" name="_huntName" />
+        <label>Hunt name</label>
+        <div class="input-overlay-container hunt-name">
+          <input *ngIf="!currentHunt" type="text" [(ngModel)]="huntName" name="_huntName" />
+          <span *ngIf="currentHunt" class="input-overlay" style="width:100%">
+            {{ currentHunt.name }}
+          </span>
+        </div>
       </div>
       <div class="form-group">
         <label>Time (in minutes)</label>
-        <input type="number" [(ngModel)]="huntHistoryTime" name="_huntHistoryTime" />
+        <div class="input-overlay-container">
+          <input type="number" [(ngModel)]="huntHistoryTime" name="_huntHistoryTime" />
+          <span class="input-overlay">Saved: {{ currentHunt?.historyMinutes ?? '-' }}</span>
+        </div>
       </div>
       <div class="form-group">
         <label>Mana potions used</label>
-        <input type="number" [(ngModel)]="huntPotionsUsed" name="_huntPotionsUsed" />
+        <div class="input-overlay-container">
+          <input type="number" [(ngModel)]="huntPotionsUsed" name="_huntPotionsUsed" />
+          <span class="input-overlay">Saved: {{ currentHunt?.historyPotions ?? '-' }}</span>
+        </div>
       </div>
       <div class="form-group">
         <label>Arrows used</label>
-        <input type="number" [(ngModel)]="huntArrowsUsed" name="_huntArrowsUsed" />
+        <div class="input-overlay-container">
+          <input type="number" [(ngModel)]="huntArrowsUsed" name="_huntArrowsUsed" />
+          <span class="input-overlay">Saved: {{ currentHunt?.historyArrows ?? '-' }}</span>
+        </div>
       </div>
       <div class="form-group">
         <label>Runes used</label>
-        <input type="number" [(ngModel)]="huntRunesUsed" name="_huntRunesUsed" />
+        <div class="input-overlay-container">
+          <input type="number" [(ngModel)]="huntRunesUsed" name="_huntRunesUsed" />
+          <span class="input-overlay">Saved: {{ currentHunt?.historyRunes ?? '-' }}</span>
+        </div>
       </div>
       <div class="form-group">
         <label>Spirits used</label>
-        <input type="number" [(ngModel)]="huntSpiritsUsed" name="_huntSpiritsUsed" />
+        <div class="input-overlay-container">
+          <input type="number" [(ngModel)]="huntSpiritsUsed" name="_huntSpiritsUsed" />
+          <span class="input-overlay">Saved: {{ currentHunt?.historySpirits ?? '-' }}</span>
+        </div>
       </div>
-      <button type="button" class="action-btn" (click)="saveHunt()">Salvar hunt</button>
+
+      <div class="button-row">
+        <button *ngIf="!currentHunt" type="button" class="action-btn" (click)="saveHunt()">Salvar hunt</button>
+        <button *ngIf="currentHunt" type="button" class="action-btn merge-btn" (click)="mergeHunt(currentHunt.name)">
+          Merge hunt: {{ currentHunt.name }}
+        </button>
+        <button *ngIf="currentHunt" type="button" class="action-btn reset-btn" (click)="resetForm()">
+          Reset
+        </button>
+      </div>
     </section>
 
     <!-- Hunt Planning -->
@@ -58,6 +88,7 @@
     <div class="card-list">
       <app-hunt-card *ngFor="let hunt of huntsList"
         [hunt]="hunt"
+        [selected]="currentHunt && hunt.name === currentHunt.name"
         (loadThis)="loadHunt($event)"
         (mergeHunt)="mergeHunt($event)"
         (deleteHunt)="deleteHunt($event)">

@@ -1,8 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Hunt } from '../model/hunt';
+import { FormsModule } from '@angular/forms';
+import { HuntCardComponent } from '../hunt-card/hunt-card.component';
+import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-hunt-planner',
+  standalone: true,
+  imports: [FormsModule, HuntCardComponent, CommonModule],
   templateUrl: './hunt-planner.component.html',
   styleUrls: ['./hunt-planner.component.css']
 })
@@ -10,6 +16,7 @@ export class HuntPlannerComponent implements OnInit {
 
   huntsList: Hunt[] = [];
 
+  currentHunt: Hunt | null = null;
   huntHistoryTime: string;
   huntPotionsUsed: string;
   huntArrowsUsed: string;
@@ -27,17 +34,17 @@ export class HuntPlannerComponent implements OnInit {
   AVALANCHE_CAP = 0.52;
   ULTIMATE_SPIRIT_CAP = 3.1;
 
-  constructor() { }
+  constructor(private cdr: ChangeDetectorRef, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.loadSavedHunts();
   }
 
   gerarResultado() {
-    const manaPerMinute = Number.parseInt(this.huntPotionsUsed) / Number.parseInt(this.huntHistoryTime);
-    const arrowPerMinute = Number.parseInt(this.huntArrowsUsed) / Number.parseInt(this.huntHistoryTime);
-    const runesPerMinute = Number.parseInt(this.huntRunesUsed) / Number.parseInt(this.huntHistoryTime);
-    const spiritsPerMinute = Number.parseInt(this.huntSpiritsUsed) / Number.parseInt(this.huntHistoryTime);
+    const manaPerMinute = this.currentHunt.historyPotions / this.currentHunt.historyMinutes;
+    const arrowPerMinute = this.currentHunt.historyArrows / this.currentHunt.historyMinutes;
+    const runesPerMinute = this.currentHunt.historyRunes / this.currentHunt.historyMinutes;
+    const spiritsPerMinute = this.currentHunt.historySpirits / this.currentHunt.historyMinutes;
 
     let resultMana = 0;
     let resultBolt = 0;
@@ -86,6 +93,8 @@ export class HuntPlannerComponent implements OnInit {
       <br>- ${Math.floor(resultSpirits)} ultimate spirits
       <br>- ${Math.floor(resultBolt)} arrows
       <br>- ${Math.floor(resultRunes)} runas`;
+
+    this.toastr.success('Plan generated!', 'Success');
   }
 
   isTimeDefined() {
@@ -115,11 +124,12 @@ export class HuntPlannerComponent implements OnInit {
         }
         
       } else {
-        this.huntsList.push(hunt);
+        this.huntsList = [...this.huntsList, hunt];
       }
 
       localStorage.removeItem('huntPlanner');
       localStorage.setItem('huntPlanner', JSON.stringify(this.huntsList));
+      this.toastr.success('Hunt saved!', 'Success');
     }
   }
 
@@ -131,22 +141,23 @@ export class HuntPlannerComponent implements OnInit {
     if (this.huntName === huntName) {
       const hunt = this.huntsList.filter(hunt => hunt.name === huntName).pop();
 
-      hunt.historyMinutes = hunt.historyMinutes + Number.parseInt(this.huntHistoryTime);
-      hunt.historyPotions = hunt.historyPotions + Number.parseInt(this.huntPotionsUsed);
-      hunt.historyArrows = hunt.historyArrows + Number.parseInt(this.huntArrowsUsed);
-      hunt.historyRunes = hunt.historyRunes + Number.parseInt(this.huntRunesUsed);
-      hunt.historySpirits = hunt.historySpirits + Number.parseInt(this.huntSpiritsUsed);
+      hunt.historyMinutes = hunt.historyMinutes + Number.parseInt(this.huntHistoryTime || '0');
+      hunt.historyPotions = hunt.historyPotions + Number.parseInt(this.huntPotionsUsed|| '0');
+      hunt.historyArrows = hunt.historyArrows + Number.parseInt(this.huntArrowsUsed|| '0');
+      hunt.historyRunes = hunt.historyRunes + Number.parseInt(this.huntRunesUsed|| '0');
+      hunt.historySpirits = hunt.historySpirits + Number.parseInt(this.huntSpiritsUsed|| '0');
 
-      this.huntHistoryTime = hunt.historyMinutes.toString();
-      this.huntPotionsUsed = hunt.historyPotions.toString();
-      this.huntArrowsUsed = hunt.historyArrows.toString();
-      this.huntRunesUsed = hunt.historyRunes.toString();
-      this.huntSpiritsUsed = hunt.historySpirits.toString();
+      this.huntHistoryTime = '';
+      this.huntPotionsUsed = '';
+      this.huntArrowsUsed = '';
+      this.huntRunesUsed = '';
+      this.huntSpiritsUsed = '';
 
       localStorage.removeItem('huntPlanner');
       localStorage.setItem('huntPlanner', JSON.stringify(this.huntsList));
+      this.toastr.success('Hunt merged!', 'Success');
     } else {
-      console.error("o nome da hunt é diferente - carregue uma hunt antes de mergea-la")
+      this.toastr.success('Something went wrong :(', 'Error');
     }
   }
 
@@ -154,18 +165,15 @@ export class HuntPlannerComponent implements OnInit {
     this.huntsList = this.huntsList.filter(hunt => hunt.name !== huntName);
     localStorage.removeItem('huntPlanner');
     localStorage.setItem('huntPlanner', JSON.stringify(this.huntsList));
+    this.toastr.success('Hunt deleted!', 'Success');
   }
 
   loadSavedHunts() {
     const loaded = this.load();
 
-    if (loaded) {
-      loaded.forEach(obj => {
-        if (this.isValid(obj)) {
-          this.huntsList.push(Hunt.createFromJSON(obj));
-        }
-      });
-    }
+    this.huntsList = loaded
+      ? loaded.filter(obj => this.isValid(obj)).map(obj => Hunt.createFromJSON(obj))
+      : [];
   }
 
   isValid(obj) {
@@ -173,11 +181,18 @@ export class HuntPlannerComponent implements OnInit {
   }
 
   loadHunt(hunt: Hunt) {
-    this.huntHistoryTime = hunt.historyMinutes.toString();
-    this.huntPotionsUsed = hunt.historyPotions.toString();
-    this.huntArrowsUsed = hunt.historyArrows.toString();
-    this.huntRunesUsed = hunt.historyRunes.toString();
-    this.huntSpiritsUsed = hunt.historySpirits.toString();
+    this.currentHunt = hunt;
     this.huntName = hunt.name;
+  }
+
+  resetForm() {
+    this.currentHunt = null;
+    this.huntName = '';
+    this.huntHistoryTime = '';
+    this.huntPotionsUsed = '';
+    this.huntArrowsUsed = '';
+    this.huntRunesUsed = '';
+    this.huntSpiritsUsed = '';
+    this.resultText = '';
   }
 }

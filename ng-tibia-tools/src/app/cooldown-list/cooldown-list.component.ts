@@ -1,11 +1,14 @@
 import { Component, OnInit, ɵConsole } from '@angular/core';
-import { createNewCard } from '../cooldown-card/cooldown-card.component';
+import { CooldownCardComponent, createNewCard } from '../cooldown-card/cooldown-card.component';
 import { Timer } from '../model/timer';
 import { StorageComponent } from '../storage/storage.component';
 
 @Component({
   selector: 'app-cooldown-list',
   templateUrl: './cooldown-list.component.html',
+  imports: [
+    CooldownCardComponent
+  ],
   styleUrls: ['./cooldown-list.component.css']
 })
 export class CooldownListComponent implements OnInit {

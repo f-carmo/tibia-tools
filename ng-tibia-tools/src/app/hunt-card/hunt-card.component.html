@@ -1,9 +1,9 @@
-<div class="card" style="width: 300px;">
-  <div class="card-body hunt-card" (click)="load()">
+<div class="card" style="width: 300px;" [ngClass]="{ 'selected-card': selected  }" (click)="load();">
+  <div class="card-body hunt-card">
     {{ hunt.name }}
   </div>
-  <div class="card-footer text-right">
-    <button type="button" class="btn btn-info" (click)="merge(hunt.name)" style="margin-right: 5px">Merge</button>
-    <button type="button" class="btn btn-danger" (click)="deletar(hunt.name)">Deletar</button>
+  <div class="card-actions">
+    <button type="button" class="card-btn merge" (click)="merge(hunt.name)">Merge</button>
+    <button type="button" class="card-btn delete" (click)="deletar(hunt.name)">Delete</button>
   </div>
 </div>

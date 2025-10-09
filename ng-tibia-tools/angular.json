@@ -25,7 +25,8 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.css"
+              "src/styles.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": []
           },
@@ -59,18 +60,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "tibia-tools:build"
+            "buildTarget": "tibia-tools:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "tibia-tools:build:production"
+              "buildTarget": "tibia-tools:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "tibia-tools:build"
+            "buildTarget": "tibia-tools:build"
           }
         },
         "test": {
@@ -117,7 +118,6 @@
         }
       }
     }},
-  "defaultProject": "tibia-tools",
   "cli": {
     "analytics": false
   }

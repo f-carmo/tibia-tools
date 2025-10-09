@@ -1,8 +1,0 @@
----
-applications:
-- name: tibia-tools
-  path: ./dist/tibia-tools/
-  memory: 32M
-  disk_quota: 64M
-  instances: 1
-  buildpacks: [staticfile_buildpack]

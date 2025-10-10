@@ -22,6 +22,10 @@ interface GuildActionBody {
   daysOffline: number;
 }
 
+app.get('/api/ping', (req: Request, res: Response) => {
+  res.send('Servidor está rodando!');
+});
+
 app.post('/api/guild-action', async (req: Request<{}, {}, GuildActionBody>, res: Response) => {
   const { character, newrank, action, page, GuildName, cookies, flaggedFor, isMock, level, daysOffline } = req.body;
   const formData = qs.stringify({

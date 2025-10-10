@@ -1,8 +1,13 @@
 <div class="main-layout">
   <nav class="sidebar">
     <h2>Tibia Tools</h2>
-    <button routerLink="/hunt-planner" routerLinkActive="active">Hunt Planner</button>
-    <button routerLink="/guild-scripts" routerLinkActive="active">Guild Scripts</button>
+    <div class="menu">
+      <button routerLink="/hunt-planner" routerLinkActive="active">Hunt Planner</button>
+      <button routerLink="/guild-scripts" routerLinkActive="active">Guild Scripts</button>
+    </div>
+    <footer class="sidebar-footer">
+      <small>© 2025 Tibia Tools</small>
+    </footer>
   </nav>
   <div class="content-area">
     <router-outlet></router-outlet>

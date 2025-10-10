@@ -4,7 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HuntCardComponent } from '../hunt-card/hunt-card.component';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-import { storageComponent } from '../storage/storage.service';
+import { FirebaseStorage } from '../storage/storage.service';
+import { StorageAdapter } from '../storage/storage.adapter';
 
 @Component({
   selector: 'app-hunt-planner',
@@ -34,6 +35,8 @@ export class HuntPlannerComponent implements OnInit {
   DIAMOND_ARROW_CAP = 0.8;
   AVALANCHE_CAP = 0.52;
   ULTIMATE_SPIRIT_CAP = 3.1;
+
+  storageComponent: StorageAdapter = new FirebaseStorage();
 
   constructor(private cdr: ChangeDetectorRef, private toastr: ToastrService) { }
 
@@ -132,14 +135,14 @@ export class HuntPlannerComponent implements OnInit {
         this.huntsList = [...this.huntsList, hunt];
       }
 
-      storageComponent.remove('huntPlanner');
-      storageComponent.save('huntPlanner', JSON.stringify(this.huntsList));
+      this.storageComponent.remove('huntPlanner');
+      this.storageComponent.save('huntPlanner', JSON.stringify(this.huntsList));
       this.toastr.success('Hunt saved!', 'Success');
     }
   }
 
   load() {
-    return storageComponent
+    return this.storageComponent
       .load<string>('huntPlanner')
       .then(data => JSON.parse(data || '[]'));
   }
@@ -160,8 +163,8 @@ export class HuntPlannerComponent implements OnInit {
       this.huntRunesUsed = '';
       this.huntSpiritsUsed = '';
 
-      storageComponent.remove('huntPlanner');
-      storageComponent.save('huntPlanner', JSON.stringify(this.huntsList));
+      this.storageComponent.remove('huntPlanner');
+      this.storageComponent.save('huntPlanner', JSON.stringify(this.huntsList));
       this.toastr.success('Hunt merged!', 'Success');
     } else {
       this.toastr.success('Something went wrong :(', 'Error');
@@ -170,8 +173,8 @@ export class HuntPlannerComponent implements OnInit {
 
   deleteHunt(huntName: string) {
     this.huntsList = this.huntsList.filter(hunt => hunt.name !== huntName);
-    storageComponent.remove('huntPlanner');
-    storageComponent.save('huntPlanner', JSON.stringify(this.huntsList));
+    this.storageComponent.remove('huntPlanner');
+    this.storageComponent.save('huntPlanner', JSON.stringify(this.huntsList));
     this.toastr.success('Hunt deleted!', 'Success');
     this.resetForm();
   }

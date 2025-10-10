@@ -1,7 +1,8 @@
 import { collection, doc, setDoc, getDoc, deleteDoc } from 'firebase/firestore';
 import { db } from '../firebase';
+import { StorageAdapter } from './storage.adapter';
 
-export const storageComponent = {
+export class FirebaseStorage implements StorageAdapter {
   /**
    * Salva ou atualiza um valor no Firestore
    * @param key nome da chave (string)
@@ -10,7 +11,7 @@ export const storageComponent = {
   async save(key: string, value: unknown): Promise<void> {
     const ref = doc(collection(db, 'storage'), key);
     await setDoc(ref, { value, updatedAt: new Date() });
-  },
+  }
 
   /**
    * Lê um valor armazenado
@@ -22,7 +23,7 @@ export const storageComponent = {
     const snapshot = await getDoc(ref);
     if (!snapshot.exists()) return null;
     return snapshot.data().value as T;
-  },
+  }
 
   /**
    * Remove um valor armazenado
@@ -31,5 +32,5 @@ export const storageComponent = {
   async remove(key: string): Promise<void> {
     const ref = doc(collection(db, 'storage'), key);
     await deleteDoc(ref);
-  },
+  }
 };

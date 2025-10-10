@@ -28,13 +28,6 @@
         </div>
       </div>
       <div class="form-group">
-        <label>Arrows used</label>
-        <div class="input-overlay-container">
-          <input type="string" maxlength="7" [(ngModel)]="huntArrowsUsed" name="_huntArrowsUsed" />
-          <span class="input-overlay">Saved: {{ currentHunt?.historyArrows ?? '-' }}</span>
-        </div>
-      </div>
-      <div class="form-group">
         <label>Runes used</label>
         <div class="input-overlay-container">
           <input type="string" maxlength="7" [(ngModel)]="huntRunesUsed" name="_huntRunesUsed" />
@@ -48,7 +41,13 @@
           <span class="input-overlay">Saved: {{ currentHunt?.historySpirits ?? '-' }}</span>
         </div>
       </div>
-
+      <div class="form-group">
+        <label>Arrows used</label>
+        <div class="input-overlay-container">
+          <input type="string" maxlength="7" [(ngModel)]="huntArrowsUsed" name="_huntArrowsUsed" />
+          <span class="input-overlay">Saved: {{ currentHunt?.historyArrows ?? '-' }}</span>
+        </div>
+      </div>
       <div class="button-row">
         <button *ngIf="!currentHunt" type="button" class="action-btn" (click)="saveHunt()">Salvar hunt</button>
         <button *ngIf="currentHunt" type="button" class="action-btn merge-btn" (click)="mergeHunt(currentHunt.name)">

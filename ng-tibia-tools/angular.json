@@ -5,10 +5,10 @@
   "projects": {
     "tibia-tools": {
       "projectType": "application",
-      "schematics": {},
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
+      "schematics": {},
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -117,7 +117,8 @@
           }
         }
       }
-    }},
+    }
+  },
   "cli": {
     "analytics": false
   }

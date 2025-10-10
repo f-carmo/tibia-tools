@@ -16,35 +16,35 @@
       <div class="form-group">
         <label>Time (in minutes)</label>
         <div class="input-overlay-container">
-          <input type="number" [(ngModel)]="huntHistoryTime" name="_huntHistoryTime" />
+          <input type="string" maxlength="7" [(ngModel)]="huntHistoryTime" name="_huntHistoryTime" />
           <span class="input-overlay">Saved: {{ currentHunt?.historyMinutes ?? '-' }}</span>
         </div>
       </div>
       <div class="form-group">
         <label>Mana potions used</label>
         <div class="input-overlay-container">
-          <input type="number" [(ngModel)]="huntPotionsUsed" name="_huntPotionsUsed" />
+          <input type="string" maxlength="7" [(ngModel)]="huntPotionsUsed" name="_huntPotionsUsed" />
           <span class="input-overlay">Saved: {{ currentHunt?.historyPotions ?? '-' }}</span>
         </div>
       </div>
       <div class="form-group">
         <label>Arrows used</label>
         <div class="input-overlay-container">
-          <input type="number" [(ngModel)]="huntArrowsUsed" name="_huntArrowsUsed" />
+          <input type="string" maxlength="7" [(ngModel)]="huntArrowsUsed" name="_huntArrowsUsed" />
           <span class="input-overlay">Saved: {{ currentHunt?.historyArrows ?? '-' }}</span>
         </div>
       </div>
       <div class="form-group">
         <label>Runes used</label>
         <div class="input-overlay-container">
-          <input type="number" [(ngModel)]="huntRunesUsed" name="_huntRunesUsed" />
+          <input type="string" maxlength="7" [(ngModel)]="huntRunesUsed" name="_huntRunesUsed" />
           <span class="input-overlay">Saved: {{ currentHunt?.historyRunes ?? '-' }}</span>
         </div>
       </div>
       <div class="form-group">
         <label>Spirits used</label>
         <div class="input-overlay-container">
-          <input type="number" [(ngModel)]="huntSpiritsUsed" name="_huntSpiritsUsed" />
+          <input type="string" maxlength="7" [(ngModel)]="huntSpiritsUsed" name="_huntSpiritsUsed" />
           <span class="input-overlay">Saved: {{ currentHunt?.historySpirits ?? '-' }}</span>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HuntCardComponent } from '../hunt-card/hunt-card.component';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { storageComponent } from '../storage/storage.service';
 
 @Component({
   selector: 'app-hunt-planner',
@@ -116,36 +117,42 @@ export class HuntPlannerComponent implements OnInit {
           this.mergeHunt(hunt.name);
           return;
         } else {
-          huntLookup.historyMinutes = hunt.historyMinutes;
-          huntLookup.historyPotions = hunt.historyPotions;
-          huntLookup.historyArrows = hunt.historyArrows;
-          huntLookup.historyRunes = hunt.historyRunes;
-          huntLookup.historySpirits = hunt.historySpirits;
+          huntLookup.historyMinutes = isNaN(hunt.historyMinutes) ? 0 : hunt.historyMinutes;
+          huntLookup.historyPotions = isNaN(hunt.historyPotions) ? 0 : hunt.historyPotions;
+          huntLookup.historyArrows  = isNaN(hunt.historyArrows)  ? 0 : hunt.historyArrows;
+          huntLookup.historyRunes   = isNaN(hunt.historyRunes)   ? 0 : hunt.historyRunes;
+          huntLookup.historySpirits = isNaN(hunt.historySpirits) ? 0 : hunt.historySpirits;
         }
-        
       } else {
+        hunt.historyMinutes = isNaN(hunt.historyMinutes) ? 0 : hunt.historyMinutes;
+        hunt.historyPotions = isNaN(hunt.historyPotions) ? 0 : hunt.historyPotions;
+        hunt.historyArrows  = isNaN(hunt.historyArrows)  ? 0 : hunt.historyArrows;
+        hunt.historyRunes   = isNaN(hunt.historyRunes)   ? 0 : hunt.historyRunes;
+        hunt.historySpirits = isNaN(hunt.historySpirits) ? 0 : hunt.historySpirits;
         this.huntsList = [...this.huntsList, hunt];
       }
 
-      localStorage.removeItem('huntPlanner');
-      localStorage.setItem('huntPlanner', JSON.stringify(this.huntsList));
+      storageComponent.remove('huntPlanner');
+      storageComponent.save('huntPlanner', JSON.stringify(this.huntsList));
       this.toastr.success('Hunt saved!', 'Success');
     }
   }
 
   load() {
-    return JSON.parse(localStorage.getItem('huntPlanner'));
+    return storageComponent
+      .load<string>('huntPlanner')
+      .then(data => JSON.parse(data || '[]'));
   }
 
   mergeHunt(huntName: string) {
     if (this.huntName === huntName) {
       const hunt = this.huntsList.filter(hunt => hunt.name === huntName).pop();
 
-      hunt.historyMinutes = hunt.historyMinutes + Number.parseInt(this.huntHistoryTime || '0');
-      hunt.historyPotions = hunt.historyPotions + Number.parseInt(this.huntPotionsUsed|| '0');
-      hunt.historyArrows = hunt.historyArrows + Number.parseInt(this.huntArrowsUsed|| '0');
-      hunt.historyRunes = hunt.historyRunes + Number.parseInt(this.huntRunesUsed|| '0');
-      hunt.historySpirits = hunt.historySpirits + Number.parseInt(this.huntSpiritsUsed|| '0');
+      hunt.historyMinutes = hunt.historyMinutes + (isNaN(Number.parseInt(this.huntHistoryTime)) ? 0 : Number.parseInt(this.huntHistoryTime));
+      hunt.historyPotions = hunt.historyPotions + (isNaN(Number.parseInt(this.huntPotionsUsed)) ? 0 : Number.parseInt(this.huntPotionsUsed));
+      hunt.historyArrows = hunt.historyArrows + (isNaN(Number.parseInt(this.huntArrowsUsed)) ? 0 : Number.parseInt(this.huntArrowsUsed));
+      hunt.historyRunes = hunt.historyRunes + (isNaN(Number.parseInt(this.huntRunesUsed)) ? 0 : Number.parseInt(this.huntRunesUsed));
+      hunt.historySpirits = hunt.historySpirits + (isNaN(Number.parseInt(this.huntSpiritsUsed)) ? 0 : Number.parseInt(this.huntSpiritsUsed));
 
       this.huntHistoryTime = '';
       this.huntPotionsUsed = '';
@@ -153,8 +160,8 @@ export class HuntPlannerComponent implements OnInit {
       this.huntRunesUsed = '';
       this.huntSpiritsUsed = '';
 
-      localStorage.removeItem('huntPlanner');
-      localStorage.setItem('huntPlanner', JSON.stringify(this.huntsList));
+      storageComponent.remove('huntPlanner');
+      storageComponent.save('huntPlanner', JSON.stringify(this.huntsList));
       this.toastr.success('Hunt merged!', 'Success');
     } else {
       this.toastr.success('Something went wrong :(', 'Error');
@@ -163,13 +170,14 @@ export class HuntPlannerComponent implements OnInit {
 
   deleteHunt(huntName: string) {
     this.huntsList = this.huntsList.filter(hunt => hunt.name !== huntName);
-    localStorage.removeItem('huntPlanner');
-    localStorage.setItem('huntPlanner', JSON.stringify(this.huntsList));
+    storageComponent.remove('huntPlanner');
+    storageComponent.save('huntPlanner', JSON.stringify(this.huntsList));
     this.toastr.success('Hunt deleted!', 'Success');
+    this.resetForm();
   }
 
-  loadSavedHunts() {
-    const loaded = this.load();
+  async loadSavedHunts() {
+    const loaded = await this.load();
 
     this.huntsList = loaded
       ? loaded.filter(obj => this.isValid(obj)).map(obj => Hunt.createFromJSON(obj))
